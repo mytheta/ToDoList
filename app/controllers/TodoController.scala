@@ -28,10 +28,10 @@ class TodoController @Inject()(todoService: TodoService, val messagesApi: Messag
   }
 
   def save() = Action { implicit request =>
-    val name: String = todoForm.bindFromRequest().get
-    println(name)
-    Ok("save")
+  val name: String = todoForm.bindFromRequest().get
+  todoService.insert(Todo(name))
+  Redirect(routes.TodoController.list())
+}
 
-  }
 
 }
