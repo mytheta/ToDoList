@@ -9,15 +9,28 @@ import play.api.mvc._
 import views._
 import services._
 
-class TodoController @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport {
+class TodoController @Inject()(todoService: TodoService, val messagesApi: MessagesApi) extends Controller with I18nSupport {
 
   def helloworld() = Action { implicit request =>
     Ok("Hello World")
   }
   def list() = Action { implicit request =>
-    val items: Seq[Todo] = Seq(Todo("Todo1"),Todo("Todo2"))
+    val items: Seq[Todo] = todoService.list()
     // val message: String = "ここにリストを表示"
     Ok(html.list(items))
+
+  }
+
+  val todoForm: Form[String] = Form("name" -> nonEmptyText)
+
+  def create = Action {
+    Ok(html.createForm(todoForm))
+  }
+
+  def save() = Action { implicit request =>
+    val name: String = todoForm.bindFromRequest().get
+    println(name)
+    Ok("save")
 
   }
 
