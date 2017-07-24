@@ -23,7 +23,7 @@ class TodoController @Inject()(todoService: TodoService, val messagesApi: Messag
 
   val todoForm: Form[String] = Form("name" -> nonEmptyText)
 
-  def create = Action {
+  def create = Action { implicit request =>
     Ok(html.createForm(todoForm))
   }
 
